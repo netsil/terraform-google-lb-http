@@ -89,14 +89,12 @@ resource "google_compute_backend_service" "default" {
   enable_cdn      = "${var.cdn}"
 }
 
-resource "google_compute_health_check" "default-http" {
+resource "google_compute_health_check" "default-tcp" {
   project      = "${var.project}"
   count        = "${length(var.backend_params)}"
   name         = "${var.name}-backend-${count.index}"
-  http_health_check = {
-    host         = "${element(split(",", element(var.backend_params, count.index)), 4)}"
+  tcp_health_check = {
     port         = "${element(split(",", element(var.backend_params, count.index)), 2)}"
-    request_path = "${element(split(",", element(var.backend_params, count.index)), 0)}"
   }
 }
 
