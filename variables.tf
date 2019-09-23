@@ -115,3 +115,8 @@ variable cdn {
   description = "Set to `true` to enable cdn on backend."
   default     = "false"
 }
+
+
+variable "ssl_policy" {
+  description = "SSL resource that will be associated with the TargetSslProxy resource."
+}
