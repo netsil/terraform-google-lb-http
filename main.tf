@@ -28,7 +28,7 @@ resource "google_compute_global_forwarding_rule" "https" {
   project    = "${var.project}"
   count      = "${var.ssl ? 1 : 0}"
   name       = "${var.name}-https"
-  target     = "${google_compute_target_https_proxy.default.self_link}"
+  target     = "${google_compute_target_https_proxy.default[0].self_link}"
   ip_address = "${google_compute_global_address.default.address}"
   port_range = "443"
   depends_on = ["google_compute_global_address.default"]
