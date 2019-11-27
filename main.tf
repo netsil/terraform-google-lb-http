@@ -65,7 +65,7 @@ resource "google_compute_ssl_certificate" "default" {
   private_key = "${var.private_key}"
   certificate = "${var.certificate}"
 
-  lifecycle = {
+  lifecycle {
     create_before_destroy = true
   }
 }
@@ -94,7 +94,7 @@ resource "google_compute_health_check" "default-tcp" {
   project      = "${var.project}"
   count        = "${length(var.backend_params)}"
   name         = "${var.name}-backend-${count.index}"
-  tcp_health_check = {
+  tcp_health_check {
     port         = "${element(split(",", element(var.backend_params, count.index)), 2)}"
   }
 }
@@ -106,7 +106,7 @@ resource "google_compute_firewall" "default-hc" {
   name          = "${var.name}-hc-${count.index}"
   network       = "${element(var.firewall_networks, count.index)}"
   source_ranges = ["130.211.0.0/22", "35.191.0.0/16", "209.85.152.0/22", "209.85.204.0/22"]
-  target_tags   = ["${var.target_tags}"]
+  target_tags   = "${var.target_tags}"
 
   allow {
     protocol = "tcp"
