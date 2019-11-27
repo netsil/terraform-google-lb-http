@@ -31,13 +31,13 @@ variable ip_version {
 
 variable firewall_networks {
   description = "Names of the networks to create firewall rules in"
-  type        = "list"
+  type        = list
   default     = ["default"]
 }
 
 variable firewall_projects {
   description = "Names of the projects to create firewall rules in"
-  type        = "list"
+  type        = list
   default     = ["default"]
 }
 
@@ -47,17 +47,17 @@ variable name {
 
 variable target_tags {
   description = "List of target tags for health check firewall rule."
-  type        = "list"
+  type        = list
 }
 
 variable backends {
   description = "Map backend indices to list of backend maps."
-  type        = "map"
+  type        = map
 }
 
 variable backend_params {
   description = "Comma-separated encoded list of parameters in order: health check path, service port name, service port, backend timeout seconds"
-  type        = "list"
+  type        = list
 }
 
 variable backend_protocol {
@@ -101,7 +101,7 @@ variable use_ssl_certificates {
 }
 
 variable ssl_certificates {
-  type        = "list"
+  type        = list
   description = "SSL cert self_link list. Required if `ssl` is `true` and no `private_key` and `certificate` is provided."
   default     = []
 }
