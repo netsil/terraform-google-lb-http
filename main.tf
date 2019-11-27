@@ -107,7 +107,7 @@ resource "google_compute_health_check" "default-tcp" {
   project      = var.project
   count        = length(var.backend_params)
   name         = "${var.name}-backend-${count.index}"
-  tcp_health_check {
+  tcp_health_check = {
     port         = {element(split(",", element(var.backend_params, count.index)), 2)
   }
 }
