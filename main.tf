@@ -120,9 +120,11 @@ resource "google_compute_firewall" "default-hc" {
   network       = "${element(var.firewall_networks, count.index)}"
   source_ranges = ["130.211.0.0/22", "35.191.0.0/16", "209.85.152.0/22", "209.85.204.0/22"]
   target_tags   = "${var.target_tags}"
-
-  allow {
-    protocol = "tcp"
-    ports    = ["${element(split(",", element(split("|", join("", list(join("|", var.backend_params), replace(format("%*s", length(var.backend_params), ""), " ", "|")))), count.index)), 2)}"]
+  dynamic "allow" {
+    for_each = distinct(var.backend_params)
+    content {
+      protocol = "tcp"
+      ports    = [split(",", allow.value)[2]]
+    }
   }
 }
