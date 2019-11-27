@@ -84,8 +84,19 @@ resource "google_compute_backend_service" "default" {
   port_name       = "${element(split(",", element(var.backend_params, count.index)), 1)}"
   protocol        = "${var.backend_protocol}"
   timeout_sec     = "${element(split(",", element(var.backend_params, count.index)), 3)}"
-  backend         =  {
-    ["${var.backends["${count.index}"]}"]
+  dynamic "backend" {
+    for_each = var.backends[count.index]
+    content {
+      balancing_mode               = lookup(backend.value, "balancing_mode", null)
+      capacity_scaler              = lookup(backend.value, "capacity_scaler", null)
+      description                  = lookup(backend.value, "description", null)
+      group                        = lookup(backend.value, "group", null)
+      max_connections              = lookup(backend.value, "max_connections", null)
+      max_connections_per_instance = lookup(backend.value, "max_connections_per_instance", null)
+      max_rate                     = lookup(backend.value, "max_rate", null)
+      max_rate_per_instance        = lookup(backend.value, "max_rate_per_instance", null)
+      max_utilization              = lookup(backend.value, "max_utilization", null)
+    }
   }
   health_checks   = ["${element(google_compute_health_check.default-tcp.*.self_link, count.index)}"]
   security_policy = "${var.security_policy}"
